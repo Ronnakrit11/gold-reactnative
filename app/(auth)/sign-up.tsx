@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Platform } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -9,6 +9,7 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   async function signUp() {
     if (!email || !password) {
@@ -21,7 +22,6 @@ export default function SignUp() {
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email address');
@@ -32,21 +32,34 @@ export default function SignUp() {
     setError(null);
     
     try {
+      // Sign up the user
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
         password,
-        options: {
-          data: {
-            email: email.trim(),
-          },
-        },
       });
 
       if (signUpError) throw signUpError;
       if (!user) throw new Error('No user data returned');
 
-      // Success - redirect to main app
-      router.replace('/(app)/(tabs)/');
+      // Manually insert the profile
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: user.id,
+            email: email.trim(),
+            balance: 0
+          }
+        ])
+        .select();
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+        throw new Error('Failed to create user profile');
+      }
+
+      // Success - redirect to main app using replace instead of push
+      router.replace('/');
     } catch (err: any) {
       console.error('Sign up error:', err);
       setError(err.message || 'An error occurred during sign up');

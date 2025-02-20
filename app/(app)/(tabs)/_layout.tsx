@@ -46,7 +46,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Gold Trade',
+          title: 'Aurienn',
           tabBarIcon: ({ size, color }) => (
             <Ionicons name="trending-up" size={size} color={color} />
           ),
