@@ -1,61 +1,64 @@
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../../context/ThemeContext';
 
 export default function Deposit() {
+  const { isDark } = useTheme();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.balanceCard}>
-        <Text style={styles.balanceTitle}>Available Balance</Text>
-        <Text style={styles.balanceAmount}>$10,000.00</Text>
+    <ScrollView style={[styles.container, !isDark && styles.lightContainer]}>
+      <View style={[styles.balanceCard, !isDark && styles.lightBalanceCard]}>
+        <Text style={[styles.balanceTitle, !isDark && styles.lightText]}>ยอดเงินที่ใช้ได้</Text>
+        <Text style={[styles.balanceAmount, !isDark && styles.lightText]}>฿10,000.00</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Deposit Funds</Text>
+        <Text style={[styles.sectionTitle, !isDark && styles.lightText]}>ฝากเงิน</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Enter amount"
-          placeholderTextColor="#666"
+          style={[styles.input, !isDark && styles.lightInput]}
+          placeholder="ระบุจำนวนเงิน"
+          placeholderTextColor={isDark ? "#666" : "#999"}
           keyboardType="numeric"
         />
         
-        <Text style={styles.label}>Select Payment Method</Text>
+        <Text style={[styles.label, !isDark && styles.lightText]}>เลือกวิธีการชำระเงิน</Text>
         <View style={styles.paymentMethods}>
-          <TouchableOpacity style={styles.paymentMethod}>
+          <TouchableOpacity style={[styles.paymentMethod, !isDark && styles.lightPaymentMethod]}>
             <Ionicons name="card" size={24} color="#FFD700" />
-            <Text style={styles.paymentText}>Credit Card</Text>
+            <Text style={[styles.paymentText, !isDark && styles.lightText]}>บัตรเครดิต</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.paymentMethod}>
+          <TouchableOpacity style={[styles.paymentMethod, !isDark && styles.lightPaymentMethod]}>
             <Ionicons name="business" size={24} color="#FFD700" />
-            <Text style={styles.paymentText}>Bank Transfer</Text>
+            <Text style={[styles.paymentText, !isDark && styles.lightText]}>โอนเงิน</Text>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Proceed to Payment</Text>
+          <Text style={styles.buttonText}>ดำเนินการชำระเงิน</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Recent Transactions</Text>
-        <View style={styles.transaction}>
+        <Text style={[styles.sectionTitle, !isDark && styles.lightText]}>รายการล่าสุด</Text>
+        <View style={[styles.transaction, !isDark && styles.lightTransaction]}>
           <View style={styles.transactionLeft}>
             <Ionicons name="arrow-down" size={24} color="#4CAF50" />
             <View style={styles.transactionInfo}>
-              <Text style={styles.transactionTitle}>Deposit</Text>
+              <Text style={[styles.transactionTitle, !isDark && styles.lightText]}>ฝากเงิน</Text>
               <Text style={styles.transactionDate}>2024-02-20 14:30</Text>
             </View>
           </View>
-          <Text style={styles.transactionAmount}>+$5,000.00</Text>
+          <Text style={styles.transactionAmount}>+฿5,000.00</Text>
         </View>
-        <View style={styles.transaction}>
+        <View style={[styles.transaction, !isDark && styles.lightTransaction]}>
           <View style={styles.transactionLeft}>
             <Ionicons name="arrow-down" size={24} color="#4CAF50" />
             <View style={styles.transactionInfo}>
-              <Text style={styles.transactionTitle}>Deposit</Text>
+              <Text style={[styles.transactionTitle, !isDark && styles.lightText]}>ฝากเงิน</Text>
               <Text style={styles.transactionDate}>2024-02-18 09:15</Text>
             </View>
           </View>
-          <Text style={styles.transactionAmount}>+$3,000.00</Text>
+          <Text style={styles.transactionAmount}>+฿3,000.00</Text>
         </View>
       </View>
     </ScrollView>
@@ -67,12 +70,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1a1a1a',
   },
+  lightContainer: {
+    backgroundColor: '#f5f5f5',
+  },
   balanceCard: {
     backgroundColor: '#2a2a2a',
     padding: 20,
     margin: 16,
     borderRadius: 12,
     alignItems: 'center',
+  },
+  lightBalanceCard: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   balanceTitle: {
     color: '#666',
@@ -83,6 +97,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 32,
     fontWeight: 'bold',
+  },
+  lightText: {
+    color: '#000',
   },
   section: {
     padding: 16,
@@ -101,6 +118,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 16,
   },
+  lightInput: {
+    backgroundColor: '#ffffff',
+    color: '#000',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
   label: {
     color: '#fff',
     fontSize: 16,
@@ -109,14 +132,19 @@ const styles = StyleSheet.create({
   paymentMethods: {
     flexDirection: 'row',
     marginBottom: 20,
+    gap: 12,
   },
   paymentMethod: {
     flex: 1,
     backgroundColor: '#333',
     padding: 16,
     borderRadius: 8,
-    marginRight: 12,
     alignItems: 'center',
+  },
+  lightPaymentMethod: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
   },
   paymentText: {
     color: '#fff',
@@ -141,6 +169,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#2a2a2a',
     borderRadius: 8,
     marginBottom: 12,
+  },
+  lightTransaction: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   transactionLeft: {
     flexDirection: 'row',

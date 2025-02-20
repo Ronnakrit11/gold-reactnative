@@ -1,62 +1,65 @@
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../../context/ThemeContext';
 
 export default function Asset() {
+  const { isDark } = useTheme();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Portfolio Value</Text>
-        <Text style={styles.totalValue}>$25,890.50</Text>
-        <Text style={styles.change}>+$1,234.20 (4.8%)</Text>
+    <ScrollView style={[styles.container, !isDark && styles.lightContainer]}>
+      <View style={[styles.header, !isDark && styles.lightHeader]}>
+        <Text style={[styles.title, !isDark && styles.lightText]}>มูลค่าพอร์ตโฟลิโอ</Text>
+        <Text style={[styles.totalValue, !isDark && styles.lightText]}>฿825,890.50</Text>
+        <Text style={styles.change}>+฿41,234.20 (4.8%)</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Gold Holdings</Text>
-        <View style={styles.assetCard}>
+        <Text style={[styles.sectionTitle, !isDark && styles.lightText]}>ทองคำที่ถือครอง</Text>
+        <View style={[styles.assetCard, !isDark && styles.lightAssetCard]}>
           <View style={styles.assetInfo}>
-            <View style={styles.assetIcon}>
+            <View style={[styles.assetIcon, !isDark && styles.lightAssetIcon]}>
               <Ionicons name="trending-up" size={24} color="#FFD700" />
             </View>
             <View>
-              <Text style={styles.assetName}>Physical Gold</Text>
-              <Text style={styles.assetQuantity}>10.5 oz</Text>
+              <Text style={[styles.assetName, !isDark && styles.lightText]}>ทองคำแท่ง</Text>
+              <Text style={styles.assetQuantity}>10.5 บาท</Text>
             </View>
           </View>
           <View style={styles.assetValue}>
-            <Text style={styles.assetPrice}>$19,894.25</Text>
+            <Text style={[styles.assetPrice, !isDark && styles.lightText]}>฿619,894.25</Text>
             <Text style={styles.assetChange}>+2.3%</Text>
           </View>
         </View>
 
-        <View style={styles.assetCard}>
+        <View style={[styles.assetCard, !isDark && styles.lightAssetCard]}>
           <View style={styles.assetInfo}>
-            <View style={styles.assetIcon}>
+            <View style={[styles.assetIcon, !isDark && styles.lightAssetIcon]}>
               <Ionicons name="analytics" size={24} color="#FFD700" />
             </View>
             <View>
-              <Text style={styles.assetName}>Gold ETF</Text>
-              <Text style={styles.assetQuantity}>25 units</Text>
+              <Text style={[styles.assetName, !isDark && styles.lightText]}>กองทุนทองคำ</Text>
+              <Text style={styles.assetQuantity}>25 หน่วย</Text>
             </View>
           </View>
           <View style={styles.assetValue}>
-            <Text style={styles.assetPrice}>$5,996.25</Text>
+            <Text style={[styles.assetPrice, !isDark && styles.lightText]}>฿205,996.25</Text>
             <Text style={styles.assetChange}>+1.8%</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Performance History</Text>
-        <View style={styles.performanceCard}>
-          <Text style={styles.periodLabel}>1 Month</Text>
+        <Text style={[styles.sectionTitle, !isDark && styles.lightText]}>ผลการดำเนินงาน</Text>
+        <View style={[styles.performanceCard, !isDark && styles.lightPerformanceCard]}>
+          <Text style={[styles.periodLabel, !isDark && styles.lightPeriodLabel]}>1 เดือน</Text>
           <Text style={styles.performanceValue}>+5.2%</Text>
         </View>
-        <View style={styles.performanceCard}>
-          <Text style={styles.periodLabel}>3 Months</Text>
+        <View style={[styles.performanceCard, !isDark && styles.lightPerformanceCard]}>
+          <Text style={[styles.periodLabel, !isDark && styles.lightPeriodLabel]}>3 เดือน</Text>
           <Text style={styles.performanceValue}>+12.8%</Text>
         </View>
-        <View style={styles.performanceCard}>
-          <Text style={styles.periodLabel}>1 Year</Text>
+        <View style={[styles.performanceCard, !isDark && styles.lightPerformanceCard]}>
+          <Text style={[styles.periodLabel, !isDark && styles.lightPeriodLabel]}>1 ปี</Text>
           <Text style={styles.performanceValue}>+24.5%</Text>
         </View>
       </View>
@@ -69,10 +72,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1a1a1a',
   },
+  lightContainer: {
+    backgroundColor: '#f5f5f5',
+  },
   header: {
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#2a2a2a',
+  },
+  lightHeader: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   title: {
     fontSize: 16,
@@ -84,6 +98,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 4,
+  },
+  lightText: {
+    color: '#000',
   },
   change: {
     fontSize: 16,
@@ -107,6 +124,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  lightAssetCard: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
   assetInfo: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -119,6 +144,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
+  },
+  lightAssetIcon: {
+    backgroundColor: '#f5f5f5',
   },
   assetName: {
     color: '#fff',
@@ -150,9 +178,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  lightPerformanceCard: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
   periodLabel: {
     color: '#666',
     fontSize: 16,
+  },
+  lightPeriodLabel: {
+    color: '#666',
   },
   performanceValue: {
     color: '#4CAF50',
