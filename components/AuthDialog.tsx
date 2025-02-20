@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Modal, Pressable } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 type AuthDialogProps = {
   visible: boolean;
@@ -8,6 +8,18 @@ type AuthDialogProps = {
 };
 
 export default function AuthDialog({ visible, onClose }: AuthDialogProps) {
+  const router = useRouter();
+
+  const handleSignIn = () => {
+    onClose();
+    router.push('/(auth)/sign-in');
+  };
+
+  const handleSignUp = () => {
+    onClose();
+    router.push('/(auth)/sign-up');
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -26,20 +38,14 @@ export default function AuthDialog({ visible, onClose }: AuthDialogProps) {
             <View style={styles.buttons}>
               <TouchableOpacity 
                 style={[styles.button, styles.signInButton]}
-                onPress={() => {
-                  onClose();
-                  router.push('/(auth)/sign-in');
-                }}
+                onPress={handleSignIn}
               >
                 <Text style={styles.buttonText}>Sign In</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
                 style={[styles.button, styles.signUpButton]}
-                onPress={() => {
-                  onClose();
-                  router.push('/(auth)/sign-up');
-                }}
+                onPress={handleSignUp}
               >
                 <Text style={styles.buttonText}>Sign Up</Text>
               </TouchableOpacity>

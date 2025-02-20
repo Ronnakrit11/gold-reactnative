@@ -4,12 +4,15 @@ import { Dimensions } from 'react-native';
 import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import AuthDialog from '../../../components/AuthDialog';
+import GoldPriceDisplay from '../../../components/GoldPriceDisplay';
+import { useRouter } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function GoldTrade() {
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [actionType, setActionType] = useState<'buy' | 'sell' | null>(null);
+  const router = useRouter();
 
   const data = {
     labels: ['1h', '2h', '3h', '4h', '5h', '6h'],
@@ -32,10 +35,9 @@ export default function GoldTrade() {
       strokeWidth: '2',
       stroke: '#ffd700'
     },
-    // Web-specific configuration
     ...(Platform.OS === 'web' ? {
       propsForBackgroundLines: {
-        strokeDasharray: '', // Remove dashed lines on web
+        strokeDasharray: '',
       },
       propsForLabels: {
         fontFamily: 'Arial',
@@ -52,7 +54,6 @@ export default function GoldTrade() {
       return;
     }
     
-    // Handle trade action for authenticated users
     console.log(`Authenticated user attempting to ${type} gold`);
   };
 
@@ -60,9 +61,9 @@ export default function GoldTrade() {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Gold Price</Text>
-        <Text style={styles.price}>$1,894.70</Text>
-        <Text style={styles.change}>+$2.90 (+0.15%)</Text>
       </View>
+
+      <GoldPriceDisplay />
 
       <View style={styles.chartContainer}>
         <LineChart
@@ -79,7 +80,6 @@ export default function GoldTrade() {
           withHorizontalLines={true}
           fromZero={false}
           segments={4}
-          // Disable touch events on web
           {...(Platform.OS === 'web' ? {
             onTouchStart: () => {},
             onTouchMove: () => {},
@@ -139,23 +139,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 18,
-    color: '#666',
-    marginBottom: 8,
-  },
-  price: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 4,
   },
-  change: {
-    fontSize: 16,
-    color: '#4CAF50',
-  },
   chartContainer: {
     alignItems: 'center',
     paddingHorizontal: 10,
+    marginTop: 16,
   },
   chart: {
     marginVertical: 8,
