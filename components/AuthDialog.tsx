@@ -30,9 +30,9 @@ export default function AuthDialog({ visible, onClose }: AuthDialogProps) {
       <Pressable style={styles.overlay} onPress={onClose}>
         <View style={styles.container} onStartShouldSetResponder={() => true}>
           <View style={styles.content}>
-            <Text style={styles.title}>Authentication Required</Text>
+            <Text style={styles.title}>กรุณาเข้าสู่ระบบ</Text>
             <Text style={styles.message}>
-              Please sign in or create an account to trade gold
+              เข้าสู่ระบบหรือสร้างบัญชีใหม่
             </Text>
             
             <View style={styles.buttons}>
@@ -40,14 +40,14 @@ export default function AuthDialog({ visible, onClose }: AuthDialogProps) {
                 style={[styles.button, styles.signInButton]}
                 onPress={handleSignIn}
               >
-                <Text style={styles.buttonText}>Sign In</Text>
+                <Text style={styles.buttonText}>เข้าสู่ระบบ</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
                 style={[styles.button, styles.signUpButton]}
                 onPress={handleSignUp}
               >
-                <Text style={styles.buttonText}>Sign Up</Text>
+                <Text style={styles.buttonText}>สร้างบัญชี</Text>
               </TouchableOpacity>
             </View>
             
@@ -55,7 +55,7 @@ export default function AuthDialog({ visible, onClose }: AuthDialogProps) {
               style={styles.cancelButton}
               onPress={onClose}
             >
-              <Text style={styles.cancelText}>Cancel</Text>
+              <Text style={styles.cancelText}>ยกเลิก</Text>
             </TouchableOpacity>
           </View>
         </View>

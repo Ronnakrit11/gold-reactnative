@@ -92,13 +92,13 @@ export default function GoldTrade() {
           style={[styles.button, styles.buyButton]}
           onPress={() => handleTradeAction('buy')}
         >
-          <Text style={styles.buttonText}>Buy Gold</Text>
+          <Text style={styles.buttonText}>ซื้อ</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.button, styles.sellButton]}
           onPress={() => handleTradeAction('sell')}
         >
-          <Text style={styles.buttonText}>Sell Gold</Text>
+          <Text style={styles.buttonText}>ขาย</Text>
         </TouchableOpacity>
       </View>
 
