@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 
 type GoldPriceData = {
   name: string;
@@ -13,6 +14,7 @@ export default function GoldPriceDisplay() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const { isDark } = useTheme();
 
   const formatPrice = (price: string | undefined) => {
     if (!price) return '0';
@@ -69,13 +71,13 @@ export default function GoldPriceDisplay() {
 
   useEffect(() => {
     fetchGoldPrices();
-    const interval = setInterval(fetchGoldPrices, 30000); // Refresh every 30 seconds
+    const interval = setInterval(fetchGoldPrices, 30000);
     return () => clearInterval(interval);
   }, []);
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, !isDark && styles.lightContainer]}>
         <ActivityIndicator size="large" color="#FFD700" />
       </View>
     );
@@ -83,7 +85,7 @@ export default function GoldPriceDisplay() {
 
   if (error || !priceData) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, !isDark && styles.lightContainer]}>
         <Text style={styles.error}>{error || 'ไม่พบข้อมูลราคาทอง'}</Text>
       </View>
     );
@@ -93,8 +95,8 @@ export default function GoldPriceDisplay() {
   const diffColor = diffValue > 0 ? '#4CAF50' : diffValue < 0 ? '#f44336' : '#666';
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>ราคาทองวันนี้</Text>
+    <View style={[styles.container, !isDark && styles.lightContainer]}>
+      <Text style={[styles.title, !isDark && styles.lightTitle]}>ราคาทองวันนี้</Text>
       {lastUpdate && (
         <Text style={styles.lastUpdate}>
           อัพเดทล่าสุด {formatLastUpdate(lastUpdate)}
@@ -103,20 +105,20 @@ export default function GoldPriceDisplay() {
       
       <View style={styles.priceRow}>
         <View style={styles.priceInfo}>
-          <Text style={styles.label}>รับซื้อคืน</Text>
-          <Text style={styles.price}>{formatPrice(priceData.bid)}</Text>
+          <Text style={[styles.label, !isDark && styles.lightLabel]}>รับซื้อคืน</Text>
+          <Text style={[styles.price, !isDark && styles.lightPrice]}>{formatPrice(priceData.bid)}</Text>
         </View>
         
-        <View style={styles.separator} />
+        <View style={[styles.separator, !isDark && styles.lightSeparator]} />
         
         <View style={styles.priceInfo}>
-          <Text style={styles.label}>ขายออก</Text>
-          <Text style={styles.price}>{formatPrice(priceData.ask)}</Text>
+          <Text style={[styles.label, !isDark && styles.lightLabel]}>ขายออก</Text>
+          <Text style={[styles.price, !isDark && styles.lightPrice]}>{formatPrice(priceData.ask)}</Text>
         </View>
       </View>
 
       <View style={styles.diffContainer}>
-        <Text style={styles.diffLabel}>เปลี่ยนแปลง</Text>
+        <Text style={[styles.diffLabel, !isDark && styles.lightLabel]}>เปลี่ยนแปลง</Text>
         <Text style={[styles.diffValue, { color: diffColor }]}>
           {diffValue > 0 ? '+' : ''}{priceData.diff}
         </Text>
@@ -133,12 +135,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 16,
   },
+  lightContainer: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFD700',
     marginBottom: 4,
     textAlign: 'center',
+  },
+  lightTitle: {
+    color: '#000',
   },
   lastUpdate: {
     fontSize: 14,
@@ -162,15 +175,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#444',
     marginHorizontal: 16,
   },
+  lightSeparator: {
+    backgroundColor: '#e0e0e0',
+  },
   label: {
     fontSize: 16,
     color: '#999',
     marginBottom: 8,
   },
+  lightLabel: {
+    color: '#666',
+  },
   price: {
     fontSize: 24,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  lightPrice: {
+    color: '#000',
   },
   diffContainer: {
     flexDirection: 'row',

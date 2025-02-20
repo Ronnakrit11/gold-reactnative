@@ -6,6 +6,7 @@ import { supabase } from '../../../lib/supabase';
 import AuthDialog from '../../../components/AuthDialog';
 import GoldPriceDisplay from '../../../components/GoldPriceDisplay';
 import { useRouter } from 'expo-router';
+import { useTheme } from '../../../context/ThemeContext';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -13,6 +14,7 @@ export default function GoldTrade() {
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [actionType, setActionType] = useState<'buy' | 'sell' | null>(null);
   const router = useRouter();
+  const { isDark } = useTheme();
 
   const data = {
     labels: ['1h', '2h', '3h', '4h', '5h', '6h'],
@@ -22,9 +24,9 @@ export default function GoldTrade() {
   };
 
   const chartConfig = {
-    backgroundColor: '#1a1a1a',
-    backgroundGradientFrom: '#1a1a1a',
-    backgroundGradientTo: '#1a1a1a',
+    backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+    backgroundGradientFrom: isDark ? '#1a1a1a' : '#ffffff',
+    backgroundGradientTo: isDark ? '#1a1a1a' : '#ffffff',
     decimalPlaces: 2,
     color: (opacity = 1) => `rgba(255, 215, 0, ${opacity})`,
     style: {
@@ -58,10 +60,8 @@ export default function GoldTrade() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Gold Price</Text>
-      </View>
+    <ScrollView style={[styles.container, !isDark && styles.lightContainer]}>
+    
 
       <GoldPriceDisplay />
 
@@ -102,19 +102,19 @@ export default function GoldTrade() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.marketInfo}>
-        <Text style={styles.sectionTitle}>Market Information</Text>
+      <View style={[styles.marketInfo, !isDark && styles.lightMarketInfo]}>
+        <Text style={[styles.sectionTitle, !isDark && styles.lightText]}>ข้อมูลตลาด</Text>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>24h High</Text>
-          <Text style={styles.infoValue}>$1,897.20</Text>
+          <Text style={[styles.infoLabel, !isDark && styles.lightInfoLabel]}>สูงสุด 24 ชม.</Text>
+          <Text style={[styles.infoValue, !isDark && styles.lightText]}>฿32,897.20</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>24h Low</Text>
-          <Text style={styles.infoValue}>$1,889.50</Text>
+          <Text style={[styles.infoLabel, !isDark && styles.lightInfoLabel]}>ต่ำสุด 24 ชม.</Text>
+          <Text style={[styles.infoValue, !isDark && styles.lightText]}>฿32,889.50</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>24h Volume</Text>
-          <Text style={styles.infoValue}>1,234.5 oz</Text>
+          <Text style={[styles.infoLabel, !isDark && styles.lightInfoLabel]}>ปริมาณ 24 ชม.</Text>
+          <Text style={[styles.infoValue, !isDark && styles.lightText]}>1,234.5 บาท</Text>
         </View>
       </View>
 
@@ -134,15 +134,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1a1a1a',
   },
+  lightContainer: {
+    backgroundColor: '#f5f5f5',
+  },
   header: {
     padding: 20,
     alignItems: 'center',
+    backgroundColor: '#2a2a2a',
+  },
+  lightHeader: {
+    backgroundColor: '#ffffff',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 4,
+  },
+  lightText: {
+    color: '#000',
   },
   chartContainer: {
     alignItems: 'center',
@@ -179,6 +189,12 @@ const styles = StyleSheet.create({
   },
   marketInfo: {
     padding: 20,
+    backgroundColor: '#2a2a2a',
+    margin: 16,
+    borderRadius: 12,
+  },
+  lightMarketInfo: {
+    backgroundColor: '#ffffff',
   },
   sectionTitle: {
     fontSize: 18,
@@ -193,6 +209,9 @@ const styles = StyleSheet.create({
   infoLabel: {
     color: '#666',
     fontSize: 16,
+  },
+  lightInfoLabel: {
+    color: '#666',
   },
   infoValue: {
     color: '#fff',
