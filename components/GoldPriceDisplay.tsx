@@ -12,15 +12,22 @@ export default function GoldPriceDisplay() {
   const [priceData, setPriceData] = useState<GoldPriceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   const formatPrice = (price: string | undefined) => {
     if (!price) return '0';
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  const formatLastUpdate = (date: Date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
   const fetchGoldPrices = async () => {
     try {
-      // Using a CORS proxy to bypass CORS restrictions
       const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://www.thaigold.info/RealTimeDataV2/gtdata_.txt'));
       
       if (!response.ok) {
@@ -36,7 +43,6 @@ export default function GoldPriceDisplay() {
         throw new Error('Invalid data format');
       }
 
-      // Find the สมาคมฯ data
       const goldData = Array.isArray(data) ? 
         data.find((item: any) => item.name === "สมาคมฯ") :
         (data.name === "สมาคมฯ" ? data : null);
@@ -51,6 +57,7 @@ export default function GoldPriceDisplay() {
         ask: goldData.ask,
         diff: goldData.diff
       });
+      setLastUpdate(new Date());
       setError(null);
     } catch (err) {
       console.error('Error fetching gold prices:', err);
@@ -88,6 +95,11 @@ export default function GoldPriceDisplay() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>ราคาทองวันนี้</Text>
+      {lastUpdate && (
+        <Text style={styles.lastUpdate}>
+          อัพเดทล่าสุด {formatLastUpdate(lastUpdate)}
+        </Text>
+      )}
       
       <View style={styles.priceRow}>
         <View style={styles.priceInfo}>
@@ -125,8 +137,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFD700',
-    marginBottom: 16,
+    marginBottom: 4,
     textAlign: 'center',
+  },
+  lastUpdate: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 16,
   },
   priceRow: {
     flexDirection: 'row',
