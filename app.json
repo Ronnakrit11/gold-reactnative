@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Aurienn",
+    "name": "bolt-expo-nativewind",
     "slug": "bolt-expo-nativewind",
-    "version": "2.0.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -10,35 +10,30 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nookteanook.boltexponativewind"
+      "bundleIdentifier": "com.nookteanook.boltexponativewind",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nookteanook.boltexponativewind"
+      "package": "com.nookteanook.boltexponativewind",
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",
       "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-secure-store"
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
         "projectId": "44b57929-ce67-48c8-9225-f9819a9e69da"
-      },
-      "router": {
-        "origin": false
       }
-    },
-    "owner": "nookteanook"
+    }
   }
 }

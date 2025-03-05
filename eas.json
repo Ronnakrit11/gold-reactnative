@@ -26,6 +26,11 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./path-to-your-key.json",
+        "track": "internal"
+      }
+    }
   }
 }
